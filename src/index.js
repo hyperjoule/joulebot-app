@@ -41,7 +41,7 @@ const ChatGPT = () => {
     try {
       setIsDisabled(true);
       setLoading(true); // Set loading to true before making the API call
-      setData((prevData) => [{ type: "user", text: textInput }, ...prevData]); // Add user's text to data
+      setData((prevData) => [{ type: "user", text: textInput }, ...prevData]); 
   
       const isDrawRequest = textInput.toLowerCase().startsWith("draw a") || textInput.toLowerCase().startsWith("draw me a");
   
@@ -54,7 +54,7 @@ const ChatGPT = () => {
         }
       } else {
         const response = await handleSend(textInput, apiKey);
-        setData((prevData) => [{ type: "bot", text: response }, ...prevData]); // Update data with Joulebot's response
+        setData((prevData) => [{ type: "bot", text: response }, ...prevData]); 
   
         if (speakerStatus) {
           Speech.speak(response, { rate: 0.9 });
@@ -66,14 +66,14 @@ const ChatGPT = () => {
       }
       setTextInput("");
       setIsDisabled(false);
-      setLoading(false); // Set loading to false after receiving the response
+      setLoading(false); 
     } catch (error) {
       console.error(error);
       if (error.response) {
         console.error(error.response.data);
       }
       setIsDisabled(false);
-      setLoading(false); // Set loading to false in case of an error
+      setLoading(false); 
     }
   };
       
