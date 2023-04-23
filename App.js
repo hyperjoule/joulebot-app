@@ -1,4 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope */
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import ChatGPT from './src'
 
