@@ -1,9 +1,10 @@
 import axios from "axios";
 import * as Speech from "expo-speech";
 
-const MAX_HISTORY = 10; // I've played with this a bit but 10 seems to work well with the token limit
-let conversationHistory = [];
+const MAX_TOKENS = 1500;
+const MAX_HISTORY = 10; // I've played with this a bit but 10 seems to work well with the token limit 1500
 const MAX_RETRIES = 3;
+let conversationHistory = [];
 let retries = 0;
 
 export const handleSend = async (
@@ -53,7 +54,7 @@ export const handleSend = async (
         {
           messages: messages,
           model: "gpt-3.5-turbo",
-          max_tokens: 1500,
+          max_tokens: MAX_TOKENS,
           frequency_penalty: 0.5,
           presence_penalty: 1,
           n: 1,
