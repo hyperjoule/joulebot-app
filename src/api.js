@@ -18,6 +18,7 @@ export const handleSend = async (
     ...data,
   ]);
 
+  // This is where you give your chatbot his/her personality
   const messages = [
     {
       role: "system",
@@ -74,7 +75,7 @@ export const handleSend = async (
     setTextInput("");
     setLoading(false);
     setIsDisabled(false);
-    // Convert Joulebot's response text to voice
+    // Convert chatbot response text to voice
     Speech.speak(text);
   } catch (error) {
     return { error };

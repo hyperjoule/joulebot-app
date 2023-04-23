@@ -17,10 +17,10 @@ import { API_KEY } from "./config";
 const ChatGPT = () => {
   const [data, setData] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
-  const flatListRef = useRef(null);
   const [loading, setLoading] = useState(false);
-  const apiKey = API_KEY;
   const [textInput, setTextInput] = useState("");
+  const flatListRef = useRef(null);
+  const apiKey = API_KEY;
 
   const _handleSend = async () => {
     try {
