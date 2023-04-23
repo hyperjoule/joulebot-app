@@ -21,6 +21,9 @@ const ChatGPT = () => {
   const [textInput, setTextInput] = useState("");
   const flatListRef = useRef(null);
   const apiKey = API_KEY;
+  // Set these to your name and your bot name
+  const userName = "Hyperjoule";
+  const botName = "Joulebot";
 
   const _handleSend = async () => {
     try {
@@ -66,7 +69,7 @@ const ChatGPT = () => {
                     color: item.type === "user" ? "navy" : "purple",
                   }}
                 >
-                  {item.type === "user" ? "Hyperjoule" : "Joulebot"}
+                  {item.type === "user" ? userName : botName}
                 </Text>
               </View>
               <View style={styles.separator} />
