@@ -1,16 +1,48 @@
 import axios from "axios";
 import * as Speech from "expo-speech";
-
+import { API_KEY } from "./config";
 const MAX_TOKENS = 1500;
 const MAX_HISTORY = 10; // I've played with this a bit but 10 seems to work well with the token limit 1500
 const MAX_RETRIES = 3;
 let conversationHistory = [];
 let retries = 0;
 
+export const generateImage = async (prompt, apiKey=API_KEY) => {
+    try {
+      const response = await axios.post(
+        "https://api.openai.com/v1/images/generations",
+        {
+            model: "image-alpha-001",
+            prompt: prompt,
+            num_images: 1,
+            size: "256x256",
+            response_format: "url",
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${apiKey}`,
+            },
+        }
+      );
+  
+      if (response.status === 200) {
+        return response.data.data[0].url;
+      }
+    } catch (error) {
+        console.error("Error generating image:", error);
+        if (error.response) {
+          console.error("Error response data:", error.response.data);
+          console.error("API Key:", apiKey);
+        }
+        return null;
+    }
+  };
+
 export const handleSend = async (
   textInput,
   data,
-  apiKey,
+  apiKey = API_KEY,
   setData,
   setTextInput,
   setLoading,
