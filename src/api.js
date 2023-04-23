@@ -92,7 +92,7 @@ export const handleSend = async (
       }
 
       break;
-    } catch (error) {
+      } catch (error) {
         // Check if the error is related to the maximum token limit
         if (
           error.response &&
@@ -111,7 +111,7 @@ export const handleSend = async (
           break;
         }
       }
-      
+
       retries += 1;
   
       if (retries < MAX_RETRIES) {
