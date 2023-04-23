@@ -124,15 +124,14 @@ const ChatGPT = () => {
                   <Text style={styles.bot}>{item.text}</Text>
                 )}
               </View>
-              {/* Render loading indicator below user's question */}
-              {loading && item.type === "user" && (
+              {loading && item.type === "user" && index === 0 && (
                 <View style={{ alignItems: 'center', padding: 10 }}>
-                  <ActivityIndicator size="small" color="purple" />
+                  <ActivityIndicator size="large" color="purple" />
                 </View>
               )}
               <View style={styles.bottomBuffer} />
             </View>
-          )}            
+          )}
         />
       </View>
       <View style={styles.inputContainer}>
