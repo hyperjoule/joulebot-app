@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from 'react'
 import {
   Linking,
   View,
@@ -8,96 +8,92 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Image,
-  ActivityIndicator,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import * as Speech from "expo-speech";
-import { styles } from "./styles";
-import { handleSend } from "./api";
-import { API_KEY } from "./config";
-import { generateImage } from "./api";
+  ActivityIndicator
+} from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import * as Speech from 'expo-speech'
+import { styles } from './styles'
+import { API_KEY } from './config'
+import { generateImage, handleSend } from './api'
 
 const ChatGPT = () => {
   // State variables
-  const [speakerStatus, setSpeakerStatus] = useState(true);
-  const [data, setData] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [textInput, setTextInput] = useState("");
+  const [speakerStatus, setSpeakerStatus] = useState(true)
+  const [data, setData] = useState([])
+  const [isDisabled, setIsDisabled] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [textInput, setTextInput] = useState('')
   // Used to for scrolling/keep current answer at top
-  const flatListRef = useRef(null);
-  const apiKey = API_KEY;
+  const flatListRef = useRef(null)
+  const apiKey = API_KEY
   // Set these to your name and your bot name and bot picture
-  const userName = "Hyperjoule";
-  const botName = "Joulebot";
-  const headerImage = "./joulebot.png";
+  const userName = 'Hyperjoule'
+  const botName = 'Joulebot'
+  const headerImage = './joulebot.png'
   // Touch toggle function for speaker icon/text to speech
   const toggleSpeaker = async () => {
-    const newSpeakerStatus = !speakerStatus;
-    setSpeakerStatus(newSpeakerStatus);
-  };
+    const newSpeakerStatus = !speakerStatus
+    setSpeakerStatus(newSpeakerStatus)
+  }
 
   const _handleSend = async () => {
     try {
-      setIsDisabled(true);
-      setLoading(true); 
-      setData((prevData) => [{ type: "user", text: textInput }, ...prevData]); 
-  
-      const isDrawRequest = textInput.toLowerCase().startsWith("draw a") || textInput.toLowerCase().startsWith("draw me a");
-  
+      setIsDisabled(true)
+      setLoading(true)
+      setData((prevData) => [{ type: 'user', text: textInput }, ...prevData])
+      const isDrawRequest = textInput.toLowerCase().startsWith('draw a') || textInput.toLowerCase().startsWith('draw me a')
       if (isDrawRequest) {
-        const imageUrl = await generateImage(textInput);
+        const imageUrl = await generateImage(textInput)
         if (imageUrl) {
-          setData((prevData) => [{ type: "bot", text: "", image: imageUrl }, ...prevData]);
+          setData((prevData) => [{ type: 'bot', text: '', image: imageUrl }, ...prevData])
         } else {
-          setData((prevData) => [{ type: "bot", text: "Error generating image." }, ...prevData]);
+          setData((prevData) => [{ type: 'bot', text: 'Error generating image.' }, ...prevData])
         }
       } else {
-        const response = await handleSend(textInput, apiKey);
-        setData((prevData) => [{ type: "bot", text: response }, ...prevData]); 
-  
+        const response = await handleSend(textInput, apiKey)
+        setData((prevData) => [{ type: 'bot', text: response }, ...prevData])
         if (speakerStatus) {
-          Speech.speak(response, { rate: 0.9 });
+          Speech.speak(response, { rate: 0.9 })
         } else {
           if (Speech.isSpeakingAsync()) {
-            Speech.stop();
+            Speech.stop()
           }
         }
       }
-      setTextInput("");
-      setIsDisabled(false);
-      setLoading(false); 
+      setTextInput('')
+      setIsDisabled(false)
+      setLoading(false)
     } catch (error) {
-      console.error(error);
+      console.error(error)
       if (error.response) {
-        console.error(error.response.data);
+        console.error(error.response.data)
       }
-      setIsDisabled(false);
-      setLoading(false); 
+      setIsDisabled(false)
+      setLoading(false)
     }
-  };
-      
+  }
+
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+    <KeyboardAvoidingView behavior='padding' style={styles.container}>
       <Image
         source={require(headerImage)}
-        style={{ height: "25%" }}
-        resizeMode="contain"
-        resizeMethod="scale"
+        style={{ height: '25%' }}
+        resizeMode='contain'
+        resizeMethod='scale'
       />
       <TouchableOpacity
         style={styles.speakerButton}
         onPress={() => {
-          toggleSpeaker();
+          toggleSpeaker()
         }}
       >
         <Ionicons
-          name={speakerStatus ? "volume-high" : "volume-mute"}
+          name={speakerStatus ? 'volume-high' : 'volume-mute'}
           size={24}
-          color={speakerStatus ? "purple" : "gray"}
+          color={speakerStatus ? 'purple' : 'gray'}
         />
       </TouchableOpacity>
-      <View style={{ flex: 1, width: "100%" }}>
+      <View style={{ flex: 1, width: '100%' }}>
         <FlatList
           data={data}
           inverted={true}
@@ -106,27 +102,29 @@ const ChatGPT = () => {
           style={styles.body}
           renderItem={({ item, index }) => (
             <View style={styles.messageContainer}>
-              <View style={{ flexDirection: "row", padding: 10 }}>
+              <View style={{ flexDirection: 'row', padding: 10 }}>
                 <Text
                   style={{
-                    fontWeight: "bold",
-                    color: item.type === "user" ? "#586095" : "#911381",
+                    fontWeight: 'bold',
+                    color: item.type === 'user' ? '#586095' : '#911381'
                   }}
                 >
-                  {item.type === "user" ? userName : botName}
+                  {item.type === 'user' ? userName : botName}
                 </Text>
               </View>
               <View style={styles.separator} />
-              <View style={{ flexDirection: "row", padding: 10, justifyContent: 'center' }}>
-                {item.image ? (
+              <View style={{ flexDirection: 'row', padding: 10, justifyContent: 'center' }}>
+                {item.image
+                  ? (
                   <Image source={{ uri: item.image }} style={{ width: 200, height: 200 }} />
-                ) : (
+                    )
+                  : (
                   <Text style={styles.bot}>{item.text}</Text>
-                )}
+                    )}
               </View>
-              {loading && item.type === "user" && index === 0 && (
+              {loading && item.type === 'user' && index === 0 && (
                 <View style={{ alignItems: 'center', padding: 10 }}>
-                  <ActivityIndicator size="large" color="purple" />
+                  <ActivityIndicator size='large' color='purple' />
                 </View>
               )}
               <View style={styles.bottomBuffer} />
@@ -139,7 +137,7 @@ const ChatGPT = () => {
           style={styles.input}
           value={textInput}
           onChangeText={(text) => setTextInput(text)}
-          placeholder="Ask Joulebot a Question"
+          placeholder='Ask Joulebot a Question'
           editable={!isDisabled}
           autoFocus={true}
         />
@@ -147,7 +145,7 @@ const ChatGPT = () => {
           style={[styles.button, isDisabled ? { opacity: 0.5 } : { opacity: 1 }]}
           onPress={() => {
             if (!isDisabled) {
-              _handleSend();
+              _handleSend()
             }
           }}
         >
@@ -156,18 +154,18 @@ const ChatGPT = () => {
       </View>
       <View style={styles.copyrightContainer}>
       <Text style={styles.copyrightText}>
-        ©2023 hyperjoule. This work is licensed under a{" "}
+        ©2023 hyperjoule. This work is licensed under a{' '}
         <Text
           style={styles.hyperlink}
-          onPress={() => Linking.openURL("https://creativecommons.org/licenses/by/4.0/")}
+          onPress={() => Linking.openURL('https://creativecommons.org/licenses/by/4.0/')}
         >
           CC BY 4.0
-        </Text>{" "}
+        </Text>{' '}
         license.
       </Text>
     </View>
     </KeyboardAvoidingView>
-  );
-};
+  )
+}
 
-export default ChatGPT;
+export default ChatGPT
