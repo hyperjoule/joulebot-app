@@ -40,31 +40,23 @@ const ChatGPT = () => {
 
   const _handleSend = async () => {
     try {
+      setIsDisabled(true);
+      const newData = [{ type: "user", text: textInput }, ...data];
+      setData(newData);
+  
       const isDrawRequest = textInput.toLowerCase().startsWith("draw a") || textInput.toLowerCase().startsWith("draw me a");
   
       if (isDrawRequest) {
-        setIsDisabled(true);
-        setImageLoading(true);
         const imageUrl = await generateImage(textInput);
-        setImageLoading(false);
-        setIsDisabled(false);
         if (imageUrl) {
-          setData([
-            { type: "bot", text: "", image: imageUrl },
-            { type: "user", text: textInput },
-            ...data,
-          ]);
+          setData([{ type: "bot", text: "", image: imageUrl }, ...newData]);
         } else {
-          setData([
-            { type: "bot", text: "Error generating image." },
-            { type: "user", text: textInput },
-            ...data,
-          ]);
+          setData([{ type: "bot", text: "Error generating image." }, ...newData]);
         }
       } else {
         const response = await handleSend(
           textInput,
-          data,
+          newData,
           apiKey,
           setData,
           setTextInput,
@@ -80,6 +72,8 @@ const ChatGPT = () => {
           }
         }
       }
+      setTextInput("");
+      setIsDisabled(false);
     } catch (error) {
       console.error(error);
       if (error.response) {
@@ -144,7 +138,8 @@ const ChatGPT = () => {
               </View>
               <View style={styles.bottomBuffer} />
             </View>
-          )}          
+          )}
+          
         />
       </View>
       <View style={styles.inputContainer}>

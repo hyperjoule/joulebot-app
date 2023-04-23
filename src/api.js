@@ -33,7 +33,6 @@ export const generateImage = async (prompt, apiKey=API_KEY) => {
         console.error("Error generating image:", error);
         if (error.response) {
           console.error("Error response data:", error.response.data);
-          console.error("API Key:", apiKey);
         }
         return null;
     }
