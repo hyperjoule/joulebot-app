@@ -36,6 +36,20 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: 10,
   },
+  copyrightContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: 10,
+  },
+  copyrightText: {
+    fontSize: 10,
+    textAlign: "center",
+  },
+  hyperlink: {
+    fontSize: 10,
+    color: "blue",
+    textDecorationLine: "underline",
+  },
   inputContainer: {
     backgroundColor: '#FFC0CB',
     flexDirection: 'row',
