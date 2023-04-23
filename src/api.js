@@ -1,8 +1,10 @@
 import axios from "axios";
 import * as Speech from "expo-speech";
 
-const MAX_HISTORY = 10;
+const MAX_HISTORY = 10; // I've played with this a bit but 10 seems to work well with the token limit
 let conversationHistory = [];
+const MAX_RETRIES = 3;
+let retries = 0;
 
 export const handleSend = async (
   textInput,
@@ -21,16 +23,11 @@ export const handleSend = async (
     ...data,
   ]);
 
-  // Add the user's message to the conversation history
   conversationHistory.push({ role: "user", content: textInput });
 
-  // Limit the conversation history to the last MAX_HISTORY messages
   if (conversationHistory.length > MAX_HISTORY) {
     conversationHistory.shift();
   }
-
-  const MAX_RETRIES = 3;
-  let retries = 0;
 
   while (retries < MAX_RETRIES) {
     try {
@@ -101,10 +98,8 @@ export const handleSend = async (
           error.response.data.error.message &&
           error.response.data.error.message.includes("maximum context length is 4096 tokens")
         ) {
-          // Remove the oldest message from the conversation history
+          // Remove the oldest message from the conversation history and retry
           conversationHistory.shift();
-          // Log the error and retry
-          console.error("Model context length exceeded. Removing oldest message and retrying...");
         } else {
           // Log the error and break out of the loop
           console.error(error);
