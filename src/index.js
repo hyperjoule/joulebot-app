@@ -31,7 +31,7 @@ const ChatGPT = () => {
   const userName = "Hyperjoule";
   const botName = "Joulebot";
   const headerImage = "./joulebot.png";
-
+  // Touch toggle function for speaker icon/text to speech
   const toggleSpeaker = async () => {
     const newSpeakerStatus = !speakerStatus;
     setSpeakerStatus(newSpeakerStatus);
@@ -40,7 +40,7 @@ const ChatGPT = () => {
   const _handleSend = async () => {
     try {
       setIsDisabled(true);
-      setLoading(true); // Set loading to true before making the API call
+      setLoading(true); 
       setData((prevData) => [{ type: "user", text: textInput }, ...prevData]); 
   
       const isDrawRequest = textInput.toLowerCase().startsWith("draw a") || textInput.toLowerCase().startsWith("draw me a");
