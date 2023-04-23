@@ -15,10 +15,12 @@ import { handleSend } from "./api";
 import { API_KEY } from "./config";
 
 const ChatGPT = () => {
+  // State managers
   const [data, setData] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [textInput, setTextInput] = useState("");
+  // Used to for scrolling/keep current answer at top
   const flatListRef = useRef(null);
   const apiKey = API_KEY;
   // Set these to your name and your bot name
