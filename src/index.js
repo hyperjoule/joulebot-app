@@ -123,6 +123,7 @@ const ChatGPT = () => {
           onChangeText={(text) => setTextInput(text)}
           placeholder="Ask Joulebot a Question"
           editable={!isDisabled}
+          autoFocus={true}
         />
         <TouchableOpacity
           style={[styles.button, isDisabled ? { opacity: 0.5 } : { opacity: 1 }]}
