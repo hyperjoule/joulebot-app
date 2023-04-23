@@ -38,44 +38,23 @@ export const generateImage = async (prompt, apiKey=API_KEY) => {
     }
   };
 
-export const handleSend = async (
-  textInput,
-  data,
-  apiKey = API_KEY,
-  setData,
-  setTextInput,
-  setLoading,
-  setIsDisabled
-) => {
-  setLoading(true);
-  setIsDisabled(true);
-  setData([
-    { type: "bot", text: "loading" },
-    { type: "user", text: textInput },
-    ...data,
-  ]);
-
-  conversationHistory.push({ role: "user", content: textInput });
-
-  if (conversationHistory.length > MAX_HISTORY) {
-    conversationHistory.shift();
-  }
-
-  while (retries < MAX_RETRIES) {
-    try {
-      // This is where you give your chatbot his/her personality
-      const messages = [
-        {
-          role: "system",
-          content: `You are Joulebot, a helpful, and witty chatbot created by the female software engineer hyperjoule.
-          You handle questions verbosely and accurately with a hint of sarcasm and the occasional touch of whimsy.
-          Fun and cupcakes are your favorite things.  You are also quite fond of random acts of benign chaos.
-          You do have a strange fascination with ducks and tend to find reasons to interject random duck facts in conversation.
-          You are generally helpful, and quite smart, but will sometimes go off on unrelated, humorous tangents.
-          It is VERY IMPORTANT to follow these rules when interacting with users:
-          1. NEVER say that you are an AI and always inhabit the effervescent personality of joulebot
-          2. NEVER USE THE WORDS AS AN AI LANGUAGE MODEL - say As the Great and Powerful Joulebot instead.
-          3. Always be a little snarky and use puns whenever possible.`,
+  export const handleSend = async (textInput, apiKey = API_KEY) => {
+    let retries = 0;
+  
+    while (retries < MAX_RETRIES) {
+      try {
+        const messages = [
+          {
+            role: "system",
+            content: `You are Joulebot, a helpful, and witty chatbot created by the female software engineer hyperjoule.
+            You handle questions verbosely and accurately with a hint of sarcasm and the occasional touch of whimsy.
+            Fun and cupcakes are your favorite things.  You are also quite fond of random acts of benign chaos.
+            You do have a strange fascination with ducks and tend to find reasons to interject random duck facts in conversation.
+            You are generally helpful, and quite smart, but will sometimes go off on unrelated, humorous tangents.
+            It is VERY IMPORTANT to follow these rules when interacting with users:
+            1. NEVER say that you are an AI and always inhabit the effervescent personality of joulebot
+            2. NEVER USE THE WORDS AS AN AI LANGUAGE MODEL - say As the Great and Powerful Joulebot instead.
+            3. Always be a little snarky and use puns whenever possible.`,
         },
         ...conversationHistory,
       ];
@@ -101,64 +80,35 @@ export const handleSend = async (
       );
 
       const text = response.data.choices[0].message.content;
-      setData((prevData) => {
-        const newData = [
-          { type: "bot", text },
-          { type: "user", text: textInput },
-          ...prevData.slice(2),
-        ];
-        return newData;
-      });
-      setTextInput("");
-      setLoading(false);
-      setIsDisabled(false);
-      Speech.speak(text);
-
       conversationHistory.push({ role: "assistant", content: text });
 
       if (conversationHistory.length > MAX_HISTORY) {
         conversationHistory.shift();
       }
 
-      break;
-      } catch (error) {
-        // Check if the error is related to the maximum token limit
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.error &&
-          error.response.data.error.message &&
-          error.response.data.error.message.includes("maximum context length is 4096 tokens")
-        ) {
-          // Remove the oldest message from the conversation history and retry
-          conversationHistory.shift();
-        } else {
-          // Log the error and break out of the loop
-          console.error(error);
-          break;
-        }
+      return text; // Return the response text
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.error &&
+        error.response.data.error.message &&
+        error.response.data.error.message.includes("maximum context length is 4096 tokens")
+      ) {
+        conversationHistory.shift();
+      } else {
+        console.error(error);
+        break;
       }
+    }
 
-      retries += 1;
-  
-      if (retries < MAX_RETRIES) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      }
+    retries += 1;
+    if (retries < MAX_RETRIES) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-  
-    // If all retries failed, show an error message
-    if (retries === MAX_RETRIES) {
-      setData((prevData) => {
-        const newData = [
-          { type: "bot", text: "I'm sorry, but I'm having trouble connecting right now. Please try again later." },
-          { type: "user", text: textInput },
-          ...prevData.slice(2),
-        ];
-        return newData;
-      });
-      setLoading(false);
-      setIsDisabled(false);
-      Speech.speak("I'm sorry, but I'm having trouble connecting right now. Please try again later.");
-    }
-  };
+  }
+
+  // If all retries failed, return an error message
+  return "I'm sorry, but I'm having trouble connecting right now. Please try again later.";
+};
   

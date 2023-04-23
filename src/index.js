@@ -22,7 +22,6 @@ const ChatGPT = () => {
   const [speakerStatus, setSpeakerStatus] = useState(true);
   const [data, setData] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [imageLoading, setImageLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [textInput, setTextInput] = useState("");
   // Used to for scrolling/keep current answer at top
@@ -41,28 +40,21 @@ const ChatGPT = () => {
   const _handleSend = async () => {
     try {
       setIsDisabled(true);
-      const newData = [{ type: "user", text: textInput }, ...data];
-      setData(newData);
+      setLoading(true); // Set loading to true before making the API call
+      setData((prevData) => [{ type: "user", text: textInput }, ...prevData]); // Add user's text to data
   
       const isDrawRequest = textInput.toLowerCase().startsWith("draw a") || textInput.toLowerCase().startsWith("draw me a");
   
       if (isDrawRequest) {
         const imageUrl = await generateImage(textInput);
         if (imageUrl) {
-          setData([{ type: "bot", text: "", image: imageUrl }, ...newData]);
+          setData((prevData) => [{ type: "bot", text: "", image: imageUrl }, ...prevData]);
         } else {
-          setData([{ type: "bot", text: "Error generating image." }, ...newData]);
+          setData((prevData) => [{ type: "bot", text: "Error generating image." }, ...prevData]);
         }
       } else {
-        const response = await handleSend(
-          textInput,
-          newData,
-          apiKey,
-          setData,
-          setTextInput,
-          setLoading,
-          setIsDisabled
-        );
+        const response = await handleSend(textInput, apiKey);
+        setData((prevData) => [{ type: "bot", text: response }, ...prevData]); // Update data with Joulebot's response
   
         if (speakerStatus) {
           Speech.speak(response, { rate: 0.9 });
@@ -74,15 +66,17 @@ const ChatGPT = () => {
       }
       setTextInput("");
       setIsDisabled(false);
+      setLoading(false); // Set loading to false after receiving the response
     } catch (error) {
       console.error(error);
       if (error.response) {
         console.error(error.response.data);
       }
       setIsDisabled(false);
+      setLoading(false); // Set loading to false in case of an error
     }
   };
-  
+      
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <Image
@@ -124,22 +118,21 @@ const ChatGPT = () => {
               </View>
               <View style={styles.separator} />
               <View style={{ flexDirection: "row", padding: 10, justifyContent: 'center' }}>
-                {item.type === "bot" && item.text === "loading" ? (
-                  <ActivityIndicator size="small" color="purple" />
-                ) : item.image ? (
-                  imageLoading ? (
-                    <ActivityIndicator size="large" color="purple" />
-                  ) : (
-                    <Image source={{ uri: item.image }} style={{ width: 200, height: 200 }} />
-                  )
+                {item.image ? (
+                  <Image source={{ uri: item.image }} style={{ width: 200, height: 200 }} />
                 ) : (
                   <Text style={styles.bot}>{item.text}</Text>
                 )}
               </View>
+              {/* Render loading indicator below user's question */}
+              {loading && item.type === "user" && (
+                <View style={{ alignItems: 'center', padding: 10 }}>
+                  <ActivityIndicator size="small" color="purple" />
+                </View>
+              )}
               <View style={styles.bottomBuffer} />
             </View>
-          )}
-          
+          )}            
         />
       </View>
       <View style={styles.inputContainer}>
