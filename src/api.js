@@ -11,7 +11,7 @@ export const handleSend = async (
   setData,
   setTextInput,
   setLoading,
-  setIsDisabled,
+  setIsDisabled
 ) => {
   setLoading(true);
   setIsDisabled(true);
@@ -95,41 +95,45 @@ export const handleSend = async (
     } catch (error) {
         // Check if the error is related to the maximum token limit
         if (
-        error.response &&
-        error.response.data &&
-        error.response.data.error &&
-        error.response.data.error.message &&
-        error.response.data.error.message.includes("maximum context length is 4096 tokens")
+          error.response &&
+          error.response.data &&
+          error.response.data.error &&
+          error.response.data.error.message &&
+          error.response.data.error.message.includes("maximum context length is 4096 tokens")
         ) {
-        // Remove the oldest message from the conversation history
-            conversationHistory.shift();
-        // Log the error and retry
-            console.error("Model context length exceeded. Removing oldest message and retrying...");
+          // Remove the oldest message from the conversation history
+          conversationHistory.shift();
+          // Log the error and retry
+          console.error("Model context length exceeded. Removing oldest message and retrying...");
         } else {
-        // Log the error and break out of the loop
-            console.error(error);
-            break;
+          // Log the error and break out of the loop
+          console.error(error);
+          break;
         }
-    }
-
-    // Increment the retry counter
-    retries += 1;
-
-    if (retries < MAX_RETRIES) {
+      }
+  
+      // Increment the retry counter
+      retries += 1;
+  
+      // Pause before retrying (optional)
+      if (retries < MAX_RETRIES) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        }
+      }
     }
-
+  
+    // If all retries failed, show an error message
     if (retries === MAX_RETRIES) {
-        setData((prevData) => {
-            const newData = [
-                { type: "bot", text: "I'm sorry, but I'm having trouble connecting right now. Please try again later." },
-                { type: "user", text: textInput },
-                ...prevData.slice(2),
-            ];
-            return newData;
-        });
-        setLoading(false);
-        setIsDisabled(false);
+      setData((prevData) => {
+        const newData = [
+          { type: "bot", text: "I'm sorry, but I'm having trouble connecting right now. Please try again later." },
+          { type: "user", text: textInput },
+          ...prevData.slice(2),
+        ];
+        return newData;
+      });
+      setLoading(false);
+      setIsDisabled(false);
+      Speech.speak("I'm sorry, but I'm having trouble connecting right now. Please try again later.");
     }
-};
+  };
+  
