@@ -111,11 +111,9 @@ export const handleSend = async (
           break;
         }
       }
-  
-      // Increment the retry counter
+      
       retries += 1;
   
-      // Pause before retrying (optional)
       if (retries < MAX_RETRIES) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
