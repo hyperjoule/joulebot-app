@@ -18,20 +18,20 @@ export const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#F1E0FF',
+    backgroundColor: '#d23bc0',
     borderRadius: 10,
     justifyContent: 'center',
     height: 60,
     width: '18%',
   },
   buttonText: {
-    color: 'purple',
+    color: '#60cbdd',
     fontSize: 25,
     fontWeight: 'bold',
   },  
   container: {
     alignItems: 'center',
-    backgroundColor: '#F1E0FF',
+    backgroundColor: '#e3c7f1',
     flex: 1,
     justifyContent: 'space-between',
     paddingBottom: 10,
@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   inputContainer: {
-    backgroundColor: '#FFC0CB',
+    backgroundColor: '#911381',
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,

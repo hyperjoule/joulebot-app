@@ -97,7 +97,7 @@ const ChatGPT = () => {
                 <Text
                   style={{
                     fontWeight: "bold",
-                    color: item.type === "user" ? "navy" : "purple",
+                    color: item.type === "user" ? "#586095" : "#911381",
                   }}
                 >
                   {item.type === "user" ? userName : botName}
