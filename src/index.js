@@ -10,13 +10,15 @@ import {
   Image,
   ActivityIndicator,
 } from "react-native";
-
+import { Ionicons } from "@expo/vector-icons";
+import * as Speech from "expo-speech";
 import { styles } from "./styles";
 import { handleSend } from "./api";
 import { API_KEY } from "./config";
 
 const ChatGPT = () => {
-  // State managers
+  // State variables
+  const [speakerStatus, setSpeakerStatus] = useState(true);
   const [data, setData] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -24,13 +26,19 @@ const ChatGPT = () => {
   // Used to for scrolling/keep current answer at top
   const flatListRef = useRef(null);
   const apiKey = API_KEY;
-  // Set these to your name and your bot name
+  // Set these to your name and your bot name and bot picture
   const userName = "Hyperjoule";
   const botName = "Joulebot";
+  const headerImage = "./joulebot.png";
 
+  const toggleSpeaker = async () => {
+    const newSpeakerStatus = !speakerStatus;
+    setSpeakerStatus(newSpeakerStatus);
+  };
+  
   const _handleSend = async () => {
     try {
-      await handleSend(
+      const response = await handleSend(
         textInput,
         data,
         apiKey,
@@ -39,6 +47,14 @@ const ChatGPT = () => {
         setLoading,
         setIsDisabled
       );
+  
+      if (speakerStatus) {
+        Speech.speak(response, { rate: 0.9 });
+      } else {
+        if (Speech.isSpeakingAsync()) {
+          Speech.stop();
+        }
+      }
     } catch (error) {
       console.error(error);
       if (error.response) {
@@ -46,16 +62,28 @@ const ChatGPT = () => {
       }
       setIsDisabled(false);
     }
-  }; 
-
-  return (
+  };
+ 
+   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <Image
-        source={require("./joulebot.png")}
+        source={require(headerImage)}
         style={{ height: "25%" }}
         resizeMode="contain"
         resizeMethod="scale"
       />
+      <TouchableOpacity
+        style={styles.speakerButton}
+        onPress={() => {
+          toggleSpeaker();
+        }}
+      >
+        <Ionicons
+          name={speakerStatus ? "volume-high" : "volume-mute"}
+          size={24}
+          color={speakerStatus ? "purple" : "gray"}
+        />
+      </TouchableOpacity>
       <View style={{ flex: 1, width: "100%" }}>
         <FlatList
           data={data}

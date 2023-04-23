@@ -75,6 +75,10 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     width: '90%',
   },
+  speakerButton: {
+    alignSelf: "center",
+    paddingBottom: 5,
+  },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
