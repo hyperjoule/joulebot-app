@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useRef } from 'react'
 import {
   Linking,
@@ -6,7 +7,6 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Image,
   ActivityIndicator
 } from 'react-native'
@@ -15,8 +15,15 @@ import * as Speech from 'expo-speech'
 import { styles } from './styles'
 import { API_KEY } from './config'
 import { generateImage, handleSend } from './api'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useFocusEffect } from '@react-navigation/native'
 
-const ChatGPT = () => {
+const ChatGPT = ({ route }) => {
+  // Define state variables and their corresponding setter functions
+  const [userName, setUserName] = useState('Hyperjoule')
+  const [botName, setBotName] = useState('Joulebot')
+  const apiKey = route.params?.apiKey || API_KEY
+  const headerImage = './joulebot.png'
   // State variables
   const [speakerStatus, setSpeakerStatus] = useState(true)
   const [data, setData] = useState([])
@@ -25,16 +32,27 @@ const ChatGPT = () => {
   const [textInput, setTextInput] = useState('')
   // Used to for scrolling/keep current answer at top
   const flatListRef = useRef(null)
-  const apiKey = API_KEY
-  // Set these to your name and your bot name and bot picture
-  const userName = 'Hyperjoule'
-  const botName = 'Joulebot'
-  const headerImage = './joulebot.png'
   // Touch toggle function for speaker icon/text to speech
   const toggleSpeaker = async () => {
     const newSpeakerStatus = !speakerStatus
     setSpeakerStatus(newSpeakerStatus)
   }
+  // Load values from AsyncStorage when the component is focused
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadSettings = async () => {
+        const storedUserName = await AsyncStorage.getItem('userName')
+        const storedBotName = await AsyncStorage.getItem('botName')
+        if (storedUserName) {
+          setUserName(storedUserName)
+        }
+        if (storedBotName) {
+          setBotName(storedBotName)
+        }
+      }
+      loadSettings()
+    }, [])
+  )
 
   const _handleSend = async () => {
     try {
@@ -74,7 +92,7 @@ const ChatGPT = () => {
   }
 
   return (
-    <KeyboardAvoidingView behavior='padding' style={styles.container}>
+    <View behavior='padding' style={styles.container}>
       <Image
         source={require(headerImage)}
         style={styles.headerImage}
@@ -164,7 +182,7 @@ const ChatGPT = () => {
         license.
       </Text>
     </View>
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 

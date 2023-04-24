@@ -1,5 +1,18 @@
 import { StyleSheet } from 'react-native'
 
+export const settingsStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 8,
+    marginBottom: 16
+  }
+})
+
 export const styles = StyleSheet.create({
   body: {
     backgroundColor: '#fff',
@@ -55,7 +68,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center'
   },
   headerImage: {
-    height: '25%'
+    height: '30%'
   },
   hyperlink: {
     fontSize: 10,
