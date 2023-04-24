@@ -102,7 +102,7 @@ const ChatGPT = () => {
           style={styles.body}
           renderItem={({ item, index }) => (
             <View style={styles.messageContainer}>
-              <View style={{ flexDirection: 'row', padding: 10 }}>
+              <View style={styles.row}>
                 <Text
                   style={{
                     fontWeight: 'bold',
@@ -113,17 +113,17 @@ const ChatGPT = () => {
                 </Text>
               </View>
               <View style={styles.separator} />
-              <View style={{ flexDirection: 'row', padding: 10, justifyContent: 'center' }}>
+              <View style={styles.centerRow}>
                 {item.image
                   ? (
-                  <Image source={{ uri: item.image }} style={{ width: 200, height: 200 }} />
+                  <Image source={{ uri: item.image }} style={styles.image} />
                     )
                   : (
                   <Text style={styles.bot}>{item.text}</Text>
                     )}
               </View>
               {loading && item.type === 'user' && index === 0 && (
-                <View style={{ alignItems: 'center', padding: 10 }}>
+                <View style={styles.centerAlign}>
                   <ActivityIndicator size='large' color='purple' />
                 </View>
               )}

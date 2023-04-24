@@ -29,6 +29,15 @@ export const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold'
   },
+  centerAlign: {
+    alignItems: 'center',
+    padding: 10
+  },
+  centerRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 10
+  },
   container: {
     alignItems: 'center',
     backgroundColor: '#e3c7f1',
@@ -50,6 +59,10 @@ export const styles = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline'
   },
+  image: {
+    height: 200,
+    width: 200
+  },
   inputContainer: {
     backgroundColor: '#911381',
     flexDirection: 'row',
@@ -69,6 +82,10 @@ export const styles = StyleSheet.create({
   },
   messageContainer: {
     marginBottom: 10
+  },
+  row: {
+    flexDirection: 'row',
+    padding: 10
   },
   separator: {
     borderBottomColor: 'black',
