@@ -19,12 +19,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
 
 const ChatGPT = ({ route }) => {
+  // Constants
+  const apiKey = API_KEY
+  const headerImage = './joulebot.png'
   // Define state variables and their corresponding setter functions
   const [userName, setUserName] = useState('Hyperjoule')
   const [botName, setBotName] = useState('Joulebot')
-  const apiKey = route.params?.apiKey || API_KEY
-  const headerImage = './joulebot.png'
-  // State variables
   const [speakerStatus, setSpeakerStatus] = useState(true)
   const [data, setData] = useState([])
   const [isDisabled, setIsDisabled] = useState(false)
