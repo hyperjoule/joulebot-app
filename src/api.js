@@ -39,6 +39,14 @@ export const generateImage = async (prompt, apiKey = API_KEY) => {
 export const handleSend = async (textInput, apiKey = API_KEY) => {
   let retries = 0
 
+  // Add the user's input message to the conversation history
+  conversationHistory.push({ role: 'user', content: textInput })
+
+  // Limit the conversation history to the last MAX_HISTORY messages
+  if (conversationHistory.length > MAX_HISTORY) {
+    conversationHistory.shift()
+  }
+
   while (retries < MAX_RETRIES) {
     try {
       const messages = [
