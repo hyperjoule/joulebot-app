@@ -51,7 +51,7 @@ const saveImageToGallery = async (imageUri) => {
   }
 }
 
-const ChatGPT = ({ route }) => {
+const Joulebot = ({ route }) => {
   // Constants
   const apiKey = API_KEY
   const headerImage = './joulebot.png'
@@ -239,4 +239,4 @@ const ChatGPT = ({ route }) => {
   )
 }
 
-export default ChatGPT
+export default Joulebot
