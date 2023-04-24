@@ -8,6 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  Alert,
   ActivityIndicator
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
@@ -17,6 +18,38 @@ import { API_KEY } from './config'
 import { generateImage, handleSend } from './api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
+import * as MediaLibrary from 'expo-media-library'
+import * as FileSystem from 'expo-file-system'
+
+// function to download dall-e image to folder on device
+const saveImageToGallery = async (imageUri) => {
+  try {
+    const { status } = await MediaLibrary.requestPermissionsAsync()
+    if (status !== 'granted') {
+      alert('Permission to access camera roll is required to save images.')
+      return
+    }
+
+    const tmpFile = await FileSystem.downloadAsync(
+      imageUri,
+      FileSystem.cacheDirectory + 'tmp_image.png'
+    )
+
+    const asset = await MediaLibrary.createAssetAsync(tmpFile.uri)
+
+    const albums = await MediaLibrary.getAlbumsAsync()
+    let joulebotAlbum = albums.find(album => album.title === 'Joulebot')
+    if (!joulebotAlbum) {
+      joulebotAlbum = await MediaLibrary.createAlbumAsync('Joulebot', asset, false)
+    } else {
+      await MediaLibrary.addAssetsToAlbumAsync([asset], joulebotAlbum, false)
+    }
+
+    alert('Image saved to Joulebot folder.')
+  } catch (error) {
+    console.error('Error saving image: ', error)
+  }
+}
 
 const ChatGPT = ({ route }) => {
   // Constants
@@ -134,7 +167,27 @@ const ChatGPT = ({ route }) => {
               <View style={styles.centerRow}>
                 {item.image
                   ? (
-                  <Image source={{ uri: item.image }} style={styles.image} />
+                      <TouchableOpacity
+                        onPress={() =>
+                          Alert.alert(
+                            'Save image',
+                            'Save image to Joulebot folder?',
+                            [
+                              {
+                                text: 'No',
+                                style: 'cancel'
+                              },
+                              {
+                                text: 'Yes',
+                                onPress: () => saveImageToGallery(item.image)
+                              }
+                            ],
+                            { cancelable: false }
+                          )
+                        }
+                      >
+                        <Image source={{ uri: item.image }} style={styles.image} />
+                      </TouchableOpacity>
                     )
                   : (
                   <Text style={styles.bot}>{item.text}</Text>
