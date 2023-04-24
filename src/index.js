@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useRef } from 'react'
 import {
   Linking,
@@ -6,8 +7,8 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Image,
+  Alert,
   ActivityIndicator
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
@@ -15,9 +16,48 @@ import * as Speech from 'expo-speech'
 import { styles } from './styles'
 import { API_KEY } from './config'
 import { generateImage, handleSend } from './api'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useFocusEffect } from '@react-navigation/native'
+import * as MediaLibrary from 'expo-media-library'
+import * as FileSystem from 'expo-file-system'
 
-const ChatGPT = () => {
-  // State variables
+// function to download dall-e image to folder on device
+const saveImageToGallery = async (imageUri) => {
+  try {
+    const { status } = await MediaLibrary.requestPermissionsAsync()
+    if (status !== 'granted') {
+      alert('Permission to access camera roll is required to save images.')
+      return
+    }
+
+    const tmpFile = await FileSystem.downloadAsync(
+      imageUri,
+      FileSystem.cacheDirectory + 'tmp_image.png'
+    )
+
+    const asset = await MediaLibrary.createAssetAsync(tmpFile.uri)
+
+    const albums = await MediaLibrary.getAlbumsAsync()
+    let joulebotAlbum = albums.find(album => album.title === 'Joulebot')
+    if (!joulebotAlbum) {
+      joulebotAlbum = await MediaLibrary.createAlbumAsync('Joulebot', asset, false)
+    } else {
+      await MediaLibrary.addAssetsToAlbumAsync([asset], joulebotAlbum, false)
+    }
+
+    alert('Image saved to Joulebot folder.')
+  } catch (error) {
+    console.error('Error saving image: ', error)
+  }
+}
+
+const ChatGPT = ({ route }) => {
+  // Constants
+  const apiKey = API_KEY
+  const headerImage = './joulebot.png'
+  // Define state variables and their corresponding setter functions
+  const [userName, setUserName] = useState('Hyperjoule')
+  const [botName, setBotName] = useState('Joulebot')
   const [speakerStatus, setSpeakerStatus] = useState(true)
   const [data, setData] = useState([])
   const [isDisabled, setIsDisabled] = useState(false)
@@ -25,16 +65,27 @@ const ChatGPT = () => {
   const [textInput, setTextInput] = useState('')
   // Used to for scrolling/keep current answer at top
   const flatListRef = useRef(null)
-  const apiKey = API_KEY
-  // Set these to your name and your bot name and bot picture
-  const userName = 'Hyperjoule'
-  const botName = 'Joulebot'
-  const headerImage = './joulebot.png'
   // Touch toggle function for speaker icon/text to speech
   const toggleSpeaker = async () => {
     const newSpeakerStatus = !speakerStatus
     setSpeakerStatus(newSpeakerStatus)
   }
+  // Load values from AsyncStorage when the component is focused
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadSettings = async () => {
+        const storedUserName = await AsyncStorage.getItem('userName')
+        const storedBotName = await AsyncStorage.getItem('botName')
+        if (storedUserName) {
+          setUserName(storedUserName)
+        }
+        if (storedBotName) {
+          setBotName(storedBotName)
+        }
+      }
+      loadSettings()
+    }, [])
+  )
 
   const _handleSend = async () => {
     try {
@@ -74,7 +125,7 @@ const ChatGPT = () => {
   }
 
   return (
-    <KeyboardAvoidingView behavior='padding' style={styles.container}>
+    <View behavior='padding' style={styles.container}>
       <Image
         source={require(headerImage)}
         style={styles.headerImage}
@@ -116,7 +167,27 @@ const ChatGPT = () => {
               <View style={styles.centerRow}>
                 {item.image
                   ? (
-                  <Image source={{ uri: item.image }} style={styles.image} />
+                      <TouchableOpacity
+                        onPress={() =>
+                          Alert.alert(
+                            'Save image',
+                            'Save image to Joulebot folder?',
+                            [
+                              {
+                                text: 'No',
+                                style: 'cancel'
+                              },
+                              {
+                                text: 'Yes',
+                                onPress: () => saveImageToGallery(item.image)
+                              }
+                            ],
+                            { cancelable: false }
+                          )
+                        }
+                      >
+                        <Image source={{ uri: item.image }} style={styles.image} />
+                      </TouchableOpacity>
                     )
                   : (
                   <Text style={styles.bot}>{item.text}</Text>
@@ -164,7 +235,7 @@ const ChatGPT = () => {
         license.
       </Text>
     </View>
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 

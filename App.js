@@ -1,17 +1,39 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 import ChatGPT from './src'
+import SettingsScreen from './src/SettingsScreen'
 
-export default function App () {
+const Stack = createStackNavigator()
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <ChatGPT/>
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Joulebot v1.1"
+            component={ChatGPT}
+            options={({ navigation }) => ({
+              headerRight: () => (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Settings')}
+                >
+                  <Ionicons name="settings" size={24} color="black" />
+                </TouchableOpacity>
+              )
+            })}
+          />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </KeyboardAvoidingView>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-})
+export default App
