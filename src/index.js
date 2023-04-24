@@ -77,7 +77,7 @@ const ChatGPT = () => {
     <KeyboardAvoidingView behavior='padding' style={styles.container}>
       <Image
         source={require(headerImage)}
-        style={{ height: '25%' }}
+        style={styles.headerImage}
         resizeMode='contain'
         resizeMethod='scale'
       />

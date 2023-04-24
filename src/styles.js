@@ -54,6 +54,9 @@ export const styles = StyleSheet.create({
     fontSize: 10,
     textAlign: 'center'
   },
+  headerImage: {
+    height: '25%'
+  },
   hyperlink: {
     fontSize: 10,
     color: 'blue',
