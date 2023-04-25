@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
+import { Picker } from '@react-native-picker/picker'
 import { settingsStyles } from './styles'
 import { View, Text, TextInput, TouchableOpacity, Switch } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -9,6 +10,7 @@ const SettingsScreen = ({ navigation, route }) => {
   // Define state variables and their corresponding setter functions
   const [userName, setUserName] = useState('Hyperjoule')
   const [ttsEnabled, setTtsEnabled] = useState(false)
+  const [personalityIdx, setPersonalityIdx] = useState('0')
 
   // Load values from AsyncStorage when the component mounts
   useEffect(() => {
@@ -21,17 +23,20 @@ const SettingsScreen = ({ navigation, route }) => {
       if (storedTtsEnabled) {
         setTtsEnabled(storedTtsEnabled === 'true')
       }
+      const storedPersonalityIdx = await AsyncStorage.getItem('personalityIdx')
+      if (storedPersonalityIdx) {
+        setPersonalityIdx(storedPersonalityIdx)
+      }
     }
     loadSettings()
   }, [])
 
   const saveSettings = async () => {
     try {
-      // Save the updated settings to AsyncStorage
       await AsyncStorage.setItem('userName', userName)
       await AsyncStorage.setItem('ttsEnabled', String(ttsEnabled))
-      // Pass the updated settings back to the ChatGPT screen
-      navigation.navigate('Joulebot', { userName, ttsEnabled })
+      await AsyncStorage.setItem('personalityIdx', String(personalityIdx))
+      navigation.navigate('Joulebot', { userName, ttsEnabled, personalityIdx })
     } catch (error) {
       console.error(error)
     }
@@ -55,11 +60,20 @@ const SettingsScreen = ({ navigation, route }) => {
           <Switch value={ttsEnabled} onValueChange={setTtsEnabled} />
         </View>
       </View>
+      <View style={settingsStyles.personalityContainer}>
+        <Picker
+          selectedValue={personalityIdx}
+          style={settingsStyles.picker}
+          onValueChange={(itemValue) => setPersonalityIdx(itemValue)}
+        >
+          <Picker.Item label="😇 Playful" value={'0'} />
+          <Picker.Item label="😈 Mischevious" value={'1'} />
+        </Picker>
+      </View>
       <TouchableOpacity style={settingsStyles.saveButton} onPress={saveSettings}>
         <Text style={settingsStyles.saveButtonText}>Save</Text>
       </TouchableOpacity>
     </View>
   )
 }
-
 export default SettingsScreen

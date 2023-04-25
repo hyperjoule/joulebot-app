@@ -20,6 +20,15 @@ export const settingsStyles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 10
   },
+  personalityContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  picker: {
+    height: 50,
+    width: '80%'
+  },
   userNameContainer: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -31,7 +40,7 @@ export const settingsStyles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     marginBottom: 8,
-    marginTop: 16,
+    marginTop: 130,
     padding: 10,
     width: '100%'
   },
@@ -135,6 +144,15 @@ export const styles = StyleSheet.create({
   },
   messageContainer: {
     marginBottom: 10
+  },
+  radioButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5
+  },
+  radioButtonLabel: {
+    fontSize: 16,
+    marginLeft: 5
   },
   row: {
     flexDirection: 'row',
