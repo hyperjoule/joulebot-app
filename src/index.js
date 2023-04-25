@@ -49,6 +49,72 @@ const saveImageToGallery = async (imageUri) => {
   }
 }
 
+const MessageItem = React.memo(function MessageItem ({
+  item,
+  index,
+  userName,
+  botName,
+  loading,
+  saveImageToGallery
+}) {
+  return (
+    <View style={styles.messageContainer}>
+      <View style={styles.row}>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            color: item.type === 'user' ? '#586095' : '#911381'
+          }}
+        >
+          {item.type === 'user' ? userName : botName}
+        </Text>
+      </View>
+      <View style={styles.separator} />
+      <View style={styles.centerRow}>
+        {item.image
+          ? (
+          <TouchableOpacity
+            onPress={() =>
+              Alert.alert(
+                'Save image',
+                'Save image to Joulebot album?',
+                [
+                  {
+                    text: 'No',
+                    style: 'cancel'
+                  },
+                  {
+                    text: 'Yes',
+                    onPress: () => saveImageToGallery(item.image)
+                  }
+                ],
+                { cancelable: false }
+              )
+            }
+          >
+            <Image source={{ uri: item.image }} style={styles.image} />
+          </TouchableOpacity>
+            )
+          : (
+          <TextInput
+            value={item.text}
+            style={item.type === 'user' ? styles.user : styles.bot}
+            multiline={true}
+            editable={false}
+            textAlignVertical="center"
+          />
+            )}
+      </View>
+      {loading && item.type === 'user' && index === 0 && (
+        <View style={styles.centerAlign}>
+          <ActivityIndicator size="large" color="purple" />
+        </View>
+      )}
+      <View style={styles.bottomBuffer} />
+    </View>
+  )
+})
+
 const Joulebot = ({ route }) => {
   // Constants
   const apiKey = API_KEY
@@ -116,12 +182,12 @@ const Joulebot = ({ route }) => {
   }
 
   return (
-    <View behavior='padding' style={styles.container}>
+    <View behavior="padding" style={styles.container}>
       <Image
         source={require(headerImage)}
         style={styles.headerImage}
-        resizeMode='contain'
-        resizeMethod='scale'
+        resizeMode="contain"
+        resizeMethod="scale"
       />
       <View style={{ flex: 1, width: '100%' }}>
         <FlatList
@@ -131,60 +197,14 @@ const Joulebot = ({ route }) => {
           keyExtractor={(item, index) => index.toString()}
           style={styles.body}
           renderItem={({ item, index }) => (
-            <View style={styles.messageContainer}>
-              <View style={styles.row}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    color: item.type === 'user' ? '#586095' : '#911381'
-                  }}
-                >
-                  {item.type === 'user' ? userName : botName}
-                </Text>
-              </View>
-              <View style={styles.separator} />
-              <View style={styles.centerRow}>
-                {item.image
-                  ? (
-                      <TouchableOpacity
-                        onPress={() =>
-                          Alert.alert(
-                            'Save image',
-                            'Save image to Joulebot album?',
-                            [
-                              {
-                                text: 'No',
-                                style: 'cancel'
-                              },
-                              {
-                                text: 'Yes',
-                                onPress: () => saveImageToGallery(item.image)
-                              }
-                            ],
-                            { cancelable: false }
-                          )
-                        }
-                      >
-                        <Image source={{ uri: item.image }} style={styles.image} />
-                      </TouchableOpacity>
-                    )
-                  : (
-                    <TextInput
-                      value={item.text}
-                      style={item.type === 'user' ? styles.user : styles.bot}
-                      multiline={true}
-                      editable={false}
-                      textAlignVertical="center"
-                    />
-                    )}
-              </View>
-              {loading && item.type === 'user' && index === 0 && (
-                <View style={styles.centerAlign}>
-                  <ActivityIndicator size='large' color='purple' />
-                </View>
-              )}
-              <View style={styles.bottomBuffer} />
-            </View>
+            <MessageItem
+              item={item}
+              index={index}
+              userName={userName}
+              botName={botName}
+              loading={loading && item.type === 'user' && index === 0}
+              saveImageToGallery={saveImageToGallery}
+            />
           )}
         />
       </View>
@@ -193,12 +213,15 @@ const Joulebot = ({ route }) => {
           style={styles.input}
           value={textInput}
           onChangeText={(text) => setTextInput(text)}
-          placeholder='Ask Joulebot a Question'
+          placeholder="Ask Joulebot a Question"
           editable={!isDisabled}
           autoFocus={true}
         />
         <TouchableOpacity
-          style={[styles.button, isDisabled ? { opacity: 0.5 } : { opacity: 1 }]}
+          style={[
+            styles.button,
+            isDisabled ? { opacity: 0.5 } : { opacity: 1 }
+          ]}
           onPress={() => {
             if (!isDisabled) {
               _handleSend()
@@ -219,6 +242,19 @@ Joulebot.propTypes = {
       personalityIdx: PropTypes.string || PropTypes.number
     })
   })
+}
+
+MessageItem.propTypes = {
+  item: PropTypes.shape({
+    type: PropTypes.string,
+    text: PropTypes.string,
+    image: PropTypes.string
+  }),
+  index: PropTypes.number,
+  userName: PropTypes.string,
+  botName: PropTypes.string,
+  loading: PropTypes.bool,
+  saveImageToGallery: PropTypes.func
 }
 
 export default Joulebot
