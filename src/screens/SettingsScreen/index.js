@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Picker } from '@react-native-picker/picker'
-import { styles, settingsStyles } from './styles'
+import { settingsStyles } from './styles'
 import { View, Text, TextInput, TouchableOpacity, Linking, Switch } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -47,7 +47,7 @@ const SettingsScreen = ({ navigation, route }) => {
       <View style={settingsStyles.headerContainer}>
         <Text style={settingsStyles.headerText}>How To Use</Text>
       </View>
-      <View style={styles.separator} />
+      <View style={settingsStyles.separator} />
       <Text style={settingsStyles.infoText}>
         To use Joulebot, simply input your query using your device&lsquo;s keyboard and tap &lsquo;Ask&lsquo;.
         You can also use your device&lsquo;s keyboard&lsquo;s text-to-speech functionality to &lsquo;speak&lsquo; to Joulebot.
@@ -59,7 +59,7 @@ const SettingsScreen = ({ navigation, route }) => {
       <Text style={settingsStyles.infoText}>
         Use the form below to change your username, enable Joulebot&lsquo;s voice (this can get annoying!), or change her personality settings. Enjoy!
       </Text>
-      <View style={styles.separator} />
+      <View style={settingsStyles.separator} />
       <View style={settingsStyles.userNameContainer}>
         <MaterialIcons name="person" size={24} color="black" style={settingsStyles.icon} />
         <Text style={settingsStyles.label}>User Name:</Text>
@@ -95,11 +95,11 @@ const SettingsScreen = ({ navigation, route }) => {
       <TouchableOpacity style={settingsStyles.saveButton} onPress={saveSettings}>
         <Text style={settingsStyles.saveButtonText}>Save</Text>
       </TouchableOpacity>
-      <View style={styles.copyrightContainer}>
-      <Text style={styles.copyrightText}>
+      <View style={settingsStyles.copyrightContainer}>
+      <Text style={settingsStyles.copyrightText}>
         ©2023 hyperjoule. This work is licensed under a{' '}
         <Text
-          style={styles.hyperlink}
+          style={settingsStyles.hyperlink}
           onPress={() => Linking.openURL('https://creativecommons.org/licenses/by/4.0/')}
         >
           CC BY 4.0

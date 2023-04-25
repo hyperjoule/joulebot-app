@@ -2,17 +2,17 @@ import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { View, FlatList, TextInput, TouchableOpacity, Text, Image } from 'react-native'
 import { styles } from './styles'
-import { API_KEY } from './config'
+import { API_KEY } from '../../api/config'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
-import { saveImageToGallery } from './utils/saveImageToGallery'
-import MessageItem from './components/MessageItem'
-import { useSendMessage } from './hooks/useSendMessage'
+import { saveImageToGallery } from '../../utils/saveImageToGallery'
+import MessageItem from '../../components/MessageItem'
+import { useSendMessage } from '../../hooks/useSendMessage'
 
 const Joulebot = ({ route }) => {
   // Constants
   const apiKey = API_KEY
-  const headerImage = '../assets/joulebot.png'
+  const headerImage = './images/joulebot.png'
   const botName = 'Joulebot'
 
   // Define state variables and their corresponding setter functions

@@ -3,8 +3,8 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import Joulebot from './src'
-import SettingsScreen from './src/SettingsScreen'
+import Joulebot from './src/screens/Joulebot'
+import SettingsScreen from './src/screens/SettingsScreen'
 
 const Stack = createStackNavigator()
 

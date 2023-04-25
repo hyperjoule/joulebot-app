@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_KEY } from './config'
-import personalityArray, { temperatureArray } from './personalities'
+import personalityArray, { temperatureArray } from '../data/personalities'
 const MAX_TOKENS = 1500
 const MAX_HISTORY = 10 // I've played with this a bit but 10 seems to work well with the token limit 1500
 const MAX_RETRIES = 3

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, TextInput, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native'
-import { styles } from '../styles'
+import { styles } from '../screens/Joulebot/styles'
 
 const MessageItem = ({ item, index, userName, botName, loading, saveImageToGallery }) => {
   return (
