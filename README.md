@@ -5,7 +5,8 @@ https://docs.expo.dev/
 Edit app.json with your own api key
 
 It's pretty modular, all the styles are in src/styles.js and you could replace the header image with your own png.   
-To give your chatbot a custom personality, edit the message content in api.js
+
+Personalities are in /src/data/personalities.js
 
 Special thanks to this guy here:
 
