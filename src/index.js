@@ -62,6 +62,7 @@ const Joulebot = ({ route }) => {
   const [loading, setLoading] = useState(false)
   const [textInput, setTextInput] = useState('')
   const ttsEnabled = route.params?.ttsEnabled ?? false
+  const personalityIdx = route.params?.personalityIdx ?? 0
   // Used to for scrolling/keep current answer at top
   const flatListRef = useRef(null)
 
@@ -92,7 +93,7 @@ const Joulebot = ({ route }) => {
           setData((prevData) => [{ type: 'bot', text: 'Error generating image.' }, ...prevData])
         }
       } else {
-        const response = await handleSend(textInput, apiKey)
+        const response = await handleSend(textInput, personalityIdx, apiKey)
         setData((prevData) => [{ type: 'bot', text: response }, ...prevData])
         if (ttsEnabled) {
           Speech.speak(response, { rate: 0.9 })
