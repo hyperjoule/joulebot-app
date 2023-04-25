@@ -44,7 +44,7 @@ const saveImageToGallery = async (imageUri) => {
       await MediaLibrary.addAssetsToAlbumAsync([asset], joulebotAlbum, false)
     }
 
-    alert('Image saved to Joulebot folder.')
+    alert('Image saved to Joulebot ablum.')
   } catch (error) {
     console.error('Error saving image: ', error)
   }
@@ -151,7 +151,7 @@ const Joulebot = ({ route }) => {
                         onPress={() =>
                           Alert.alert(
                             'Save image',
-                            'Save image to Joulebot folder?',
+                            'Save image to Joulebot album?',
                             [
                               {
                                 text: 'No',
