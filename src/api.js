@@ -74,7 +74,6 @@ export const handleSend = async (textInput, personalityIdx, apiKey = API_KEY) =>
         },
         ...conversationHistory
       ]
-      console.log(messages)
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
         {
