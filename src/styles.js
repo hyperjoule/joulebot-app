@@ -90,7 +90,6 @@ export const styles = StyleSheet.create({
   bot: {
     alignSelf: 'flex-end',
     fontSize: 20,
-    marginBottom: 5,
     width: '90%'
   },
   bottomBuffer: {
@@ -194,7 +193,6 @@ export const styles = StyleSheet.create({
   user: {
     alignSelf: 'flex-end',
     fontSize: 20,
-    marginBottom: 5,
     width: '90%'
   }
 })
