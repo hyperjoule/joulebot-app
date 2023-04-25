@@ -49,6 +49,7 @@ const saveImageToGallery = async (imageUri) => {
   }
 }
 
+// Use react memo to handle updates of FlatList for performance
 const MessageItem = React.memo(function MessageItem ({
   item,
   index,
