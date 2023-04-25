@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { Picker } from '@react-native-picker/picker'
 import { styles, settingsStyles } from './styles'
 import { View, Text, TextInput, TouchableOpacity, Linking, Switch } from 'react-native'
@@ -94,4 +94,14 @@ const SettingsScreen = ({ navigation, route }) => {
     </View>
   )
 }
+
+SettingsScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired
+  }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({})
+  }).isRequired
+}
+
 export default SettingsScreen

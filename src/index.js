@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import {
-  Linking,
   View,
   Text,
   TextInput,
