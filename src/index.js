@@ -12,7 +12,7 @@ import { useSendMessage } from './hooks/useSendMessage'
 const Joulebot = ({ route }) => {
   // Constants
   const apiKey = API_KEY
-  const headerImage = './joulebot.png'
+  const headerImage = '../assets/joulebot.png'
   const botName = 'Joulebot'
 
   // Define state variables and their corresponding setter functions
