@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React, { useState, useRef } from 'react'
+import PropTypes from 'prop-types'
 import {
   Linking,
   View,
@@ -217,6 +217,15 @@ const Joulebot = ({ route }) => {
     </View>
     </View>
   )
+}
+
+Joulebot.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      ttsEnabled: PropTypes.bool,
+      personalityIdx: PropTypes.number
+    })
+  })
 }
 
 export default Joulebot
