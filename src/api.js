@@ -91,7 +91,7 @@ export const handleSend = async (textInput, personalityIdx, apiKey = API_KEY) =>
         error?.response?.data?.error?.message?.includes('maximum context length is')
       ) {
         conversationHistory.shift()
-      } else if (error.response && error.response.status === 429) {
+      } else if (error?.response?.status === 429) {
         console.log(`Retry ${retries + 1}/${MAX_RETRIES} - waiting for ${retryDelay} ms`)
         await new Promise((resolve) => setTimeout(resolve, retryDelay))
         retryDelay *= 2 // Increase the delay for the next retry
