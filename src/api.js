@@ -88,11 +88,7 @@ export const handleSend = async (textInput, personalityIdx, apiKey = API_KEY) =>
       return text // Return the response text
     } catch (error) {
       if (
-        error.response &&
-        error.response.data &&
-        error.response.data.error &&
-        error.response.data.error.message &&
-        error.response.data.error.message.includes('maximum context length is')
+        error?.response?.data?.error?.message?.includes('maximum context length is')
       ) {
         conversationHistory.shift()
       } else if (error.response && error.response.status === 429) {
