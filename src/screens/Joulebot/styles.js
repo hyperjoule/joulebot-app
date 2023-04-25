@@ -49,7 +49,9 @@ export const styles = StyleSheet.create({
     paddingBottom: 10
   },
   headerImage: {
-    height: '30%'
+    height: '30%',
+    marginBottom: 10,
+    marginTop: 10
   },
   image: {
     height: 200,
