@@ -152,7 +152,9 @@ const Joulebot = ({ route }) => {
       setData((prevData) => [{ type: 'user', text: textInput }, ...prevData])
       const isDrawRequest = textInput.toLowerCase().startsWith('draw a') || textInput.toLowerCase().startsWith('draw me a')
       if (isDrawRequest) {
-        const imageUrl = await generateImage(textInput)
+        // Remove the prefix from the textInput
+        const strippedInput = textInput.replace(/^(draw\sme\s?)/i, '').trim()
+        const imageUrl = await generateImage(strippedInput)
         if (imageUrl) {
           setData((prevData) => [{ type: 'bot', text: '', image: imageUrl }, ...prevData])
         } else {
