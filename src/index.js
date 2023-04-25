@@ -170,7 +170,13 @@ const Joulebot = ({ route }) => {
                       </TouchableOpacity>
                     )
                   : (
-                  <Text style={styles.bot}>{item.text}</Text>
+                    <TextInput
+                      value={item.text}
+                      style={item.type === 'user' ? styles.user : styles.bot}
+                      multiline={true}
+                      editable={false}
+                      textAlignVertical="center"
+                    />
                     )}
               </View>
               {loading && item.type === 'user' && index === 0 && (

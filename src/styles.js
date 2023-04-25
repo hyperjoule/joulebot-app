@@ -68,8 +68,8 @@ export const styles = StyleSheet.create({
   },
   bot: {
     alignSelf: 'flex-end',
-    fontSize: 16,
-    marginBottom: 10,
+    fontSize: 20,
+    marginBottom: 5,
     width: '90%'
   },
   bottomBuffer: {
@@ -119,7 +119,8 @@ export const styles = StyleSheet.create({
   hyperlink: {
     fontSize: 10,
     color: 'blue',
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
+    width: '100%'
   },
   image: {
     height: 200,
@@ -171,5 +172,11 @@ export const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginTop: 70
+  },
+  user: {
+    alignSelf: 'flex-end',
+    fontSize: 20,
+    marginBottom: 5,
+    width: '90%'
   }
 })
