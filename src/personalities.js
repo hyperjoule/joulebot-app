@@ -29,4 +29,4 @@ const personalityArray = [
 ]
 export default personalityArray
 
-export const temperatureArray = ['0.8', '1.5', '0.5']
+export const temperatureArray = [0.8, 1.5, 0.5]
