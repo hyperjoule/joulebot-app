@@ -183,7 +183,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderBottomColor: 'black',
     borderBottomWidth: 1,
-    width: '90%'
+    width: '95%'
   },
   title: {
     fontSize: 28,
