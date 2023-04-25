@@ -229,7 +229,7 @@ Joulebot.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       ttsEnabled: PropTypes.bool,
-      personalityIdx: PropTypes.string
+      personalityIdx: PropTypes.string || PropTypes.number
     })
   })
 }
