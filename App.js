@@ -17,7 +17,7 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name="Joulebot v1.1"
+            name="Joulebot"
             component={Joulebot}
             options={({ navigation }) => ({
               headerRight: () => (

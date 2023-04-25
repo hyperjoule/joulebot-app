@@ -11,7 +11,6 @@ import {
   Alert,
   ActivityIndicator
 } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
 import * as Speech from 'expo-speech'
 import { styles } from './styles'
 import { API_KEY } from './config'
@@ -55,32 +54,24 @@ const Joulebot = ({ route }) => {
   // Constants
   const apiKey = API_KEY
   const headerImage = './joulebot.png'
+  const botName = 'Joulebot'
   // Define state variables and their corresponding setter functions
   const [userName, setUserName] = useState('Hyperjoule')
-  const [botName, setBotName] = useState('Joulebot')
-  const [speakerStatus, setSpeakerStatus] = useState(true)
   const [data, setData] = useState([])
   const [isDisabled, setIsDisabled] = useState(false)
   const [loading, setLoading] = useState(false)
   const [textInput, setTextInput] = useState('')
+  const ttsEnabled = route.params?.ttsEnabled ?? false
   // Used to for scrolling/keep current answer at top
   const flatListRef = useRef(null)
-  // Touch toggle function for speaker icon/text to speech
-  const toggleSpeaker = async () => {
-    const newSpeakerStatus = !speakerStatus
-    setSpeakerStatus(newSpeakerStatus)
-  }
+
   // Load values from AsyncStorage when the component is focused
   useFocusEffect(
     React.useCallback(() => {
       const loadSettings = async () => {
         const storedUserName = await AsyncStorage.getItem('userName')
-        const storedBotName = await AsyncStorage.getItem('botName')
         if (storedUserName) {
           setUserName(storedUserName)
-        }
-        if (storedBotName) {
-          setBotName(storedBotName)
         }
       }
       loadSettings()
@@ -103,7 +94,7 @@ const Joulebot = ({ route }) => {
       } else {
         const response = await handleSend(textInput, apiKey)
         setData((prevData) => [{ type: 'bot', text: response }, ...prevData])
-        if (speakerStatus) {
+        if (ttsEnabled) {
           Speech.speak(response, { rate: 0.9 })
         } else {
           if (Speech.isSpeakingAsync()) {
@@ -132,18 +123,6 @@ const Joulebot = ({ route }) => {
         resizeMode='contain'
         resizeMethod='scale'
       />
-      <TouchableOpacity
-        style={styles.speakerButton}
-        onPress={() => {
-          toggleSpeaker()
-        }}
-      >
-        <Ionicons
-          name={speakerStatus ? 'volume-high' : 'volume-mute'}
-          size={24}
-          color={speakerStatus ? 'purple' : 'gray'}
-        />
-      </TouchableOpacity>
       <View style={{ flex: 1, width: '100%' }}>
         <FlatList
           data={data}
