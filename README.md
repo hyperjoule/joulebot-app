@@ -18,3 +18,5 @@ Added a 10 message history to mimic functionality in my other implementations
 Added Dall-E integration on keywords 'Draw a' or 'draw me a'
 
 Added 'save to phone' ability on Dall-e generated images and began work on a settings tab
+
+Added personality switch and ability to switch username/set TTS on/off in settings tab
