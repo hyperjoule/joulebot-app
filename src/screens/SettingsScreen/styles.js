@@ -95,10 +95,6 @@ export const settingsStyles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 20
   },
-  userNameStyle: {
-    color: '#586095',
-    fontWeight: 'bold'
-  },
   ttsToggleContainer: {
     alignItems: 'center',
     flexDirection: 'row'

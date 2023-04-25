@@ -105,5 +105,9 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     fontSize: 20,
     width: '90%'
+  },
+  userNameStyle: {
+    color: '#586095',
+    fontWeight: 'bold'
   }
 })
