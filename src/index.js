@@ -1,134 +1,26 @@
 import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
-import {
-  View,
-  Text,
-  TextInput,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  Alert,
-  ActivityIndicator
-} from 'react-native'
-import * as Speech from 'expo-speech'
+import { View, FlatList, TextInput, TouchableOpacity, Text, Image } from 'react-native'
 import { styles } from './styles'
 import { API_KEY } from './config'
-import { generateImage, handleSend } from './api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
-import * as MediaLibrary from 'expo-media-library'
-import * as FileSystem from 'expo-file-system'
-
-// function to download dall-e image to folder on device
-const saveImageToGallery = async (imageUri) => {
-  try {
-    const { status } = await MediaLibrary.requestPermissionsAsync()
-    if (status !== 'granted') {
-      alert('Permission to access camera roll is required to save images.')
-      return
-    }
-
-    const tmpFile = await FileSystem.downloadAsync(
-      imageUri,
-      FileSystem.cacheDirectory + 'tmp_image.png'
-    )
-
-    const asset = await MediaLibrary.createAssetAsync(tmpFile.uri)
-
-    const albums = await MediaLibrary.getAlbumsAsync()
-    let joulebotAlbum = albums.find(album => album.title === 'Joulebot')
-    if (!joulebotAlbum) {
-      joulebotAlbum = await MediaLibrary.createAlbumAsync('Joulebot', asset, false)
-    } else {
-      await MediaLibrary.addAssetsToAlbumAsync([asset], joulebotAlbum, false)
-    }
-
-    alert('Image saved to Joulebot ablum.')
-  } catch (error) {
-    console.error('Error saving image: ', error)
-  }
-}
-
-// Use react memo to handle updates of FlatList for performance
-const MessageItem = React.memo(function MessageItem ({
-  item,
-  index,
-  userName,
-  botName,
-  loading,
-  saveImageToGallery
-}) {
-  return (
-    <View style={styles.messageContainer}>
-      <View style={styles.row}>
-        <Text
-          style={{
-            fontWeight: 'bold',
-            color: item.type === 'user' ? '#586095' : '#911381'
-          }}
-        >
-          {item.type === 'user' ? userName : botName}
-        </Text>
-      </View>
-      <View style={styles.separator} />
-      <View style={styles.centerRow}>
-        {item.image
-          ? (
-          <TouchableOpacity
-            onPress={() =>
-              Alert.alert(
-                'Save image',
-                'Save image to Joulebot album?',
-                [
-                  {
-                    text: 'No',
-                    style: 'cancel'
-                  },
-                  {
-                    text: 'Yes',
-                    onPress: () => saveImageToGallery(item.image)
-                  }
-                ],
-                { cancelable: false }
-              )
-            }
-          >
-            <Image source={{ uri: item.image }} style={styles.image} />
-          </TouchableOpacity>
-            )
-          : (
-          <TextInput
-            value={item.text}
-            style={item.type === 'user' ? styles.user : styles.bot}
-            multiline={true}
-            editable={false}
-            textAlignVertical="center"
-          />
-            )}
-      </View>
-      {loading && item.type === 'user' && index === 0 && (
-        <View style={styles.centerAlign}>
-          <ActivityIndicator size="large" color="purple" />
-        </View>
-      )}
-      <View style={styles.bottomBuffer} />
-    </View>
-  )
-})
+import { saveImageToGallery } from './utils/saveImageToGallery'
+import MessageItem from './components/MessageItem'
+import { useSendMessage } from './hooks/useSendMessage'
 
 const Joulebot = ({ route }) => {
   // Constants
   const apiKey = API_KEY
   const headerImage = './joulebot.png'
   const botName = 'Joulebot'
+
   // Define state variables and their corresponding setter functions
   const [userName, setUserName] = useState('Hyperjoule')
-  const [data, setData] = useState([])
-  const [isDisabled, setIsDisabled] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [textInput, setTextInput] = useState('')
   const ttsEnabled = route.params?.ttsEnabled ?? false
   const personalityIdx = route.params?.personalityIdx ?? 0
+
   // Used to for scrolling/keep current answer at top
   const flatListRef = useRef(null)
 
@@ -145,43 +37,11 @@ const Joulebot = ({ route }) => {
     }, [])
   )
 
-  const _handleSend = async () => {
-    try {
-      setIsDisabled(true)
-      setLoading(true)
-      setData((prevData) => [{ type: 'user', text: textInput }, ...prevData])
-      const isDrawRequest = textInput.toLowerCase().startsWith('draw a') || textInput.toLowerCase().startsWith('draw me a')
-      if (isDrawRequest) {
-        // Remove the prefix from the textInput
-        const strippedInput = textInput.replace(/^(draw\sme\s?)/i, '').trim()
-        const imageUrl = await generateImage(strippedInput)
-        if (imageUrl) {
-          setData((prevData) => [{ type: 'bot', text: '', image: imageUrl }, ...prevData])
-        } else {
-          setData((prevData) => [{ type: 'bot', text: 'Error generating image.' }, ...prevData])
-        }
-      } else {
-        const response = await handleSend(textInput, personalityIdx, apiKey)
-        setData((prevData) => [{ type: 'bot', text: response }, ...prevData])
-        if (ttsEnabled) {
-          Speech.speak(response, { rate: 0.9 })
-        } else {
-          if (Speech.isSpeakingAsync()) {
-            Speech.stop()
-          }
-        }
-      }
-      setTextInput('')
-      setIsDisabled(false)
-      setLoading(false)
-    } catch (error) {
-      console.error(error)
-      if (error.response) {
-        console.error(error.response.data)
-      }
-      setIsDisabled(false)
-      setLoading(false)
-    }
+  const { data, isDisabled, loading, handleSend } = useSendMessage(apiKey, ttsEnabled, personalityIdx)
+
+  const handleSendMessage = async () => {
+    await handleSend(textInput)
+    setTextInput('')
   }
 
   return (
@@ -227,7 +87,7 @@ const Joulebot = ({ route }) => {
           ]}
           onPress={() => {
             if (!isDisabled) {
-              _handleSend()
+              handleSendMessage(textInput)
             }
           }}
         >
@@ -242,22 +102,9 @@ Joulebot.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       ttsEnabled: PropTypes.bool,
-      personalityIdx: PropTypes.string || PropTypes.number
+      personalityIdx: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     })
   })
-}
-
-MessageItem.propTypes = {
-  item: PropTypes.shape({
-    type: PropTypes.string,
-    text: PropTypes.string,
-    image: PropTypes.string
-  }),
-  index: PropTypes.number,
-  userName: PropTypes.string,
-  botName: PropTypes.string,
-  loading: PropTypes.bool,
-  saveImageToGallery: PropTypes.func
 }
 
 export default Joulebot
