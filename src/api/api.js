@@ -14,7 +14,7 @@ export const generateImage = async (prompt, apiKey = API_KEY) => {
         model: 'image-alpha-001',
         prompt,
         num_images: 1,
-        size: '256x256',
+        size: '512x512',
         response_format: 'url'
       },
       {

@@ -1,10 +1,14 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 
 export const styles = StyleSheet.create({
   body: {
     backgroundColor: '#fff',
     flex: 1,
     padding: 10,
+    ...Platform.select({
+      web: { overflow: 'auto' },
+      default: {}
+    }),
     width: '100%'
   },
   bot: {
@@ -49,13 +53,28 @@ export const styles = StyleSheet.create({
     paddingBottom: 10
   },
   headerImage: {
-    height: '30%',
+    alignSelf: 'center',
     marginBottom: 10,
-    marginTop: 10
+    marginTop: 10,
+    ...Platform.select({
+      web: {
+        width: '100%',
+        height: '30%'
+      },
+      default: { height: '30%' }
+    })
   },
   image: {
-    height: 200,
-    width: 200
+    ...Platform.select({
+      web: {
+        width: 512,
+        height: 512
+      },
+      default: {
+        width: 200,
+        height: 200
+      }
+    })
   },
   inputContainer: {
     backgroundColor: '#911381',

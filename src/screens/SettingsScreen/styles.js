@@ -97,6 +97,7 @@ export const settingsStyles = StyleSheet.create({
   },
   ttsToggleContainer: {
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 10
   }
 })

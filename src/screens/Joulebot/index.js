@@ -12,7 +12,7 @@ import { useSendMessage } from '../../hooks/useSendMessage'
 const Joulebot = ({ route }) => {
   // Constants
   const apiKey = API_KEY
-  const headerImage = './images/joulebot.png'
+  const headerImage = require('./images/joulebot.png')
   const botName = 'Joulebot'
 
   // Define state variables and their corresponding setter functions
@@ -47,7 +47,7 @@ const Joulebot = ({ route }) => {
   return (
     <View behavior="padding" style={styles.container}>
       <Image
-        source={require(headerImage)}
+        source={headerImage}
         style={styles.headerImage}
         resizeMode="contain"
         resizeMethod="scale"
@@ -79,6 +79,7 @@ const Joulebot = ({ route }) => {
           placeholder="Ask Joulebot a Question"
           editable={!isDisabled}
           autoFocus={true}
+          onSubmitEditing={handleSendMessage}
         />
         <TouchableOpacity
           style={[

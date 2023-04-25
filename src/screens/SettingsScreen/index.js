@@ -49,12 +49,8 @@ const SettingsScreen = ({ navigation, route }) => {
       </View>
       <View style={settingsStyles.separator} />
       <Text style={settingsStyles.infoText}>
-        To use Joulebot, simply input your query using your device&lsquo;s keyboard and tap &lsquo;Ask&lsquo;.
-        You can also use your device&lsquo;s keyboard&lsquo;s text-to-speech functionality to &lsquo;speak&lsquo; to Joulebot.
-      </Text>
-      <Text style={settingsStyles.infoText}>
         If you&lsquo;d like Joulebot to draw a picture for you, begin your input with &lsquo;Draw a&lsquo; or &lsquo;Draw me a&lsquo;.
-        You can save the picture Joulebot draws for you to the Joulebot album on your device by simply tapping on it.
+        You can save the picture Joulebot draws for you by selecting the generated picture.
       </Text>
       <Text style={settingsStyles.infoText}>
         Use the form below to change your username, enable Joulebot&lsquo;s voice (this can get annoying!), or change her personality settings. Enjoy!
