@@ -74,6 +74,10 @@ export const settingsStyles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 20
   },
+  userNameStyle: {
+    color: '#586095',
+    fontWeight: 'bold'
+  },
   ttsToggleContainer: {
     alignItems: 'center',
     flexDirection: 'row'
@@ -91,6 +95,10 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     fontSize: 20,
     width: '90%'
+  },
+  botNameStyle: {
+    color: '#911381',
+    fontWeight: 'bold'
   },
   bottomBuffer: {
     height: 10

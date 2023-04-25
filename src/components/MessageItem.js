@@ -7,12 +7,7 @@ const MessageItem = ({ item, index, userName, botName, loading, saveImageToGalle
   return (
     <View style={styles.messageContainer}>
       <View style={styles.row}>
-        <Text
-          style={{
-            fontWeight: 'bold',
-            color: item.type === 'user' ? '#586095' : '#911381'
-          }}
-        >
+        <Text style={item.type === 'user' ? styles.userNameStyle : styles.botNameStyle}>
           {item.type === 'user' ? userName : botName}
         </Text>
       </View>
