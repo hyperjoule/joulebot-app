@@ -6,6 +6,26 @@ export const settingsStyles = StyleSheet.create({
     flex: 1,
     padding: 16
   },
+  headerContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 10
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+    marginLeft: 10,
+    marginRight: 10
+  },
+  infoText: {
+    fontSize: 16,
+    marginBottom: 10,
+    marginTop: 10,
+    textAlign: 'justify'
+  },
   input: {
     backgroundColor: '#FFF',
     borderColor: '#ccc',
@@ -29,18 +49,13 @@ export const settingsStyles = StyleSheet.create({
     height: 50,
     width: '80%'
   },
-  userNameContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: 10
-  },
   saveButton: {
     alignItems: 'center',
     backgroundColor: '#D23BC0',
     borderRadius: 10,
     justifyContent: 'center',
     marginBottom: 8,
-    marginTop: 130,
+    marginTop: 150,
     padding: 10,
     width: '100%'
   },
@@ -52,6 +67,12 @@ export const settingsStyles = StyleSheet.create({
   switchContainer: {
     alignItems: 'flex-end',
     flex: 1
+  },
+  userNameContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 10,
+    marginTop: 20
   },
   ttsToggleContainer: {
     alignItems: 'center',
@@ -160,13 +181,10 @@ export const styles = StyleSheet.create({
     padding: 10
   },
   separator: {
+    alignSelf: 'center',
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     width: '90%'
-  },
-  speakerButton: {
-    alignSelf: 'center',
-    paddingBottom: 5
   },
   title: {
     fontSize: 28,
