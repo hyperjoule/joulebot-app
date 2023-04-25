@@ -95,6 +95,10 @@ export const handleSend = async (textInput, personalityIdx, apiKey = API_KEY) =>
         console.log(`Retry ${retries + 1}/${MAX_RETRIES} - waiting for ${retryDelay} ms`)
         await new Promise((resolve) => setTimeout(resolve, retryDelay))
         retryDelay *= 2 // Increase the delay for the next retry
+      } else if (error?.response?.status === 503) {
+        // Handle the 503 Service Unavailable error
+        console.error('The server is temporarily unavailable. Please try again later.')
+        break
       } else {
         console.error(error)
         break
