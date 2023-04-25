@@ -209,18 +209,6 @@ const Joulebot = ({ route }) => {
           <Text style={styles.buttonText}>Ask!</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.copyrightContainer}>
-      <Text style={styles.copyrightText}>
-        ©2023 hyperjoule. This work is licensed under a{' '}
-        <Text
-          style={styles.hyperlink}
-          onPress={() => Linking.openURL('https://creativecommons.org/licenses/by/4.0/')}
-        >
-          CC BY 4.0
-        </Text>{' '}
-        license.
-      </Text>
-    </View>
     </View>
   )
 }

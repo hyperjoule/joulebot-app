@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
 import { Picker } from '@react-native-picker/picker'
-import { settingsStyles } from './styles'
-import { View, Text, TextInput, TouchableOpacity, Switch } from 'react-native'
+import { styles, settingsStyles } from './styles'
+import { View, Text, TextInput, TouchableOpacity, Linking, Switch } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { MaterialIcons } from '@expo/vector-icons'
 
@@ -79,6 +79,18 @@ const SettingsScreen = ({ navigation, route }) => {
       <TouchableOpacity style={settingsStyles.saveButton} onPress={saveSettings}>
         <Text style={settingsStyles.saveButtonText}>Save</Text>
       </TouchableOpacity>
+      <View style={styles.copyrightContainer}>
+      <Text style={styles.copyrightText}>
+        ©2023 hyperjoule. This work is licensed under a{' '}
+        <Text
+          style={styles.hyperlink}
+          onPress={() => Linking.openURL('https://creativecommons.org/licenses/by/4.0/')}
+        >
+          CC BY 4.0
+        </Text>{' '}
+        license.
+      </Text>
+    </View>
     </View>
   )
 }
