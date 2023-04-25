@@ -68,6 +68,7 @@ const SettingsScreen = ({ navigation, route }) => {
         >
           <Picker.Item label="😇 Playful" value={'0'} />
           <Picker.Item label="😈 Mischevious" value={'1'} />
+          <Picker.Item label="🧠 Super Genius" value={'2'} />
         </Picker>
       </View>
       <TouchableOpacity style={settingsStyles.saveButton} onPress={saveSettings}>
