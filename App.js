@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import ChatGPT from './src'
+import Joulebot from './src'
 import SettingsScreen from './src/SettingsScreen'
 
 const Stack = createStackNavigator()
@@ -17,8 +17,8 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name="Joulebot v1.1"
-            component={ChatGPT}
+            name="Joulebot"
+            component={Joulebot}
             options={({ navigation }) => ({
               headerRight: () => (
                 <TouchableOpacity
