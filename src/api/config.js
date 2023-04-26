@@ -2,6 +2,8 @@ import Constants from 'expo-constants'
 
 let API_KEY
 
+console.log(Constants.manifest.extra)
+console.log(process.env.API_KEY)
 if (Constants?.manifest?.extra) {
   // For the mobile app (Expo)
   API_KEY = Constants.manifest.extra.API_KEY
