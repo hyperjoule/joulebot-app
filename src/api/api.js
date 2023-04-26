@@ -1,12 +1,12 @@
 import axios from 'axios'
+import { API_KEY } from './config'
 import personalityArray, { temperatureArray } from '../data/personalities'
 const MAX_TOKENS = 1500
 const MAX_HISTORY = 10 // I've played with this a bit but 10 seems to work well with the token limit 1500
 const MAX_RETRIES = 3
 const conversationHistory = []
 
-export const generateImage = async (prompt) => {
-  const apiKey = process.env.API_KEY
+export const generateImage = async (prompt, apiKey = API_KEY) => {
   try {
     const response = await axios.post(
       'https://api.openai.com/v1/images/generations',
@@ -37,10 +37,9 @@ export const generateImage = async (prompt) => {
   }
 }
 
-export const handleSend = async (textInput, personalityIdx) => {
+export const handleSend = async (textInput, personalityIdx, apiKey = API_KEY) => {
   let retries = 0
   let retryDelay = 500
-  const apiKey = process.env.API_KEY
 
   // Add the user's input message to the conversation history
   conversationHistory.push({ role: 'user', content: textInput })
