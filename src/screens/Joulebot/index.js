@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { View, FlatList, TextInput, TouchableOpacity, Text, Image } from 'react-native'
 import { styles } from './styles'
+import { API_KEY } from '../../api/config'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
 import { saveImageToGallery } from '../../utils/saveImageToGallery'
@@ -10,6 +11,7 @@ import { useSendMessage } from '../../hooks/useSendMessage'
 
 const Joulebot = ({ route }) => {
   // Constants
+  const apiKey = API_KEY
   const headerImage = require('./images/joulebot.png')
   const botName = 'Joulebot'
 
@@ -35,7 +37,7 @@ const Joulebot = ({ route }) => {
     }, [])
   )
 
-  const { data, isDisabled, loading, handleSend } = useSendMessage(ttsEnabled, personalityIdx)
+  const { data, isDisabled, loading, handleSend } = useSendMessage(apiKey, ttsEnabled, personalityIdx)
 
   const handleSendMessage = async () => {
     await handleSend(textInput)
