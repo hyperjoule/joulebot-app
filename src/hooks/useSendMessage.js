@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import * as Speech from 'expo-speech'
-import { generateImage, handleSend as handleSendMessage } from '../api/api'
+import { generateImage, handleSend as handleSendMessage } from '../api'
 
 export const useSendMessage = (apiKey, ttsEnabled, personalityIdx) => {
   const [data, setData] = useState([])
