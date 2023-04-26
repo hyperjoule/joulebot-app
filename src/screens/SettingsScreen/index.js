@@ -50,7 +50,7 @@ const SettingsScreen = ({ navigation, route }) => {
       <View style={settingsStyles.separator} />
       <Text style={settingsStyles.infoText}>
         If you&lsquo;d like Joulebot to draw a picture for you, begin your input with &lsquo;Draw a&lsquo; or &lsquo;Draw me a&lsquo;.
-        You can save the picture Joulebot draws for you bycd selecting the generated picture.
+        You can save the picture Joulebot draws for you by selecting the generated picture.
       </Text>
       <Text style={settingsStyles.infoText}>
         Use the form below to change your username, enable Joulebot&lsquo;s voice (this can get annoying!), or change her personality settings. Enjoy!
