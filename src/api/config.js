@@ -10,6 +10,6 @@ if (typeof process.env.API_KEY !== 'undefined') {
   API_KEY = Constants.manifest.extra.API_KEY
 }
 
-console.log(API_KEY)
+console.log(process.env.API_KEY)
 
 export { API_KEY }
