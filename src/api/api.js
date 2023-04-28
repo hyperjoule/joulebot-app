@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { API_KEY } from './config'
 import personalityArray, { temperatureArray } from '../data/personalities'
-const MAX_TOKENS = 4000
-const MAX_HISTORY = 20 // I've played with this a bit but 10 seems to work well with the token limit 1500
+const MODEL = 'gpt-4' // change to whatever model you are using - see powershell script model_list.sh
+const MAX_TOKENS = 3000
+const MAX_HISTORY = 15 // I've played with this a bit but 10 seems to work well with the token limit 1500 for gpt-3.5-turbo
 const MAX_RETRIES = 3
 const conversationHistory = []
 
@@ -62,7 +63,7 @@ export const handleSend = async (textInput, personalityIdx, apiKey = API_KEY) =>
         'https://api.openai.com/v1/chat/completions',
         {
           messages,
-          model: 'gpt-4',
+          model: MODEL,
           max_tokens: MAX_TOKENS,
           frequency_penalty: 0.5,
           presence_penalty: 1,
