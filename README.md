@@ -19,3 +19,6 @@ Added Dall-E integration on keywords 'Draw a' or 'draw me a'
 Added 'save to phone' ability on Dall-e generated images and began work on a settings tab
 
 Added personality switch and ability to switch username/set TTS on/off in settings tab
+
+-- Note:  I've updated this repo to gpt-4.  At this point it is still in early access, so if you are going to try this, you will
+need to change the model to gpt-3.5-turbo and reduce the tokens and max history
